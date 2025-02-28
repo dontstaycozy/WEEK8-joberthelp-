@@ -16,7 +16,6 @@ namespace WEEK8
             InitializeComponent();
         }//yawa
         //note: ang file location kay naas comp lab WAHHAHAHHWAHH
-
         private void btnConnectionTest_Click(object sender, EventArgs e)
         {
             myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\Desktop\\College\\2nd year 2nd semester AAAAAAAAAAAAAAAA\\CPE262 (OOP2)\\CPE262 Progam Files and Codes\\WEEK8_databaseprac_msaccess-master\\SchoolDatabase.accdb");
@@ -46,46 +45,182 @@ namespace WEEK8
         }
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            string query = "INSERT INTO Student (Lastname, FirstName, Course, YearLevel, CourseNum1, FG1) VALUES (?,?,?,?,?,?)";
             myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\Desktop\\College\\2nd year 2nd semester AAAAAAAAAAAAAAAA\\CPE262 (OOP2)\\CPE262 Progam Files and Codes\\WEEK8_databaseprac_msaccess-master\\SchoolDatabase.accdb");
+            string query = "INSERT INTO [Grade Query] (Lastname, FirstName, Course, YearLevel, CourseNum1, FG1) VALUES (?,?,?,?,?,?)";
 
             myConn.Open();
-
-
-
-
-            cmd.ExecuteNonQuery();
+            using (OleDbCommand cmd = new OleDbCommand(query, myConn))
+            {
+                cmd.Parameters.AddWithValue("?", tbxLname.Text.ToUpper().Trim());
+                cmd.Parameters.AddWithValue("?", tbxFname.Text.ToUpper().Trim());
+                cmd.Parameters.AddWithValue("?", tbxCourse.Text.ToUpper().Trim());
+                cmd.Parameters.AddWithValue("?", int.Parse(tbxYlevel.Text));
+                cmd.Parameters.AddWithValue("?", tbxCourseNo.Text.ToUpper().Trim());
+                cmd.Parameters.AddWithValue("?", float.Parse(tbxFGrade1.Text));
+                cmd.ExecuteNonQuery();
+            }
             myConn.Close();
-
+            MessageBox.Show("Records inserted successfully!", "Success", MessageBoxButtons.OK);
+            btnLoadData_Click(sender, e);
         }
 
         private void btnDel_Click(object sender, EventArgs e)
         {
-            string query = "Delete From Student Where StudentID = @id";
-            cmd = new OleDbCommand(query, myConn);
-            cmd.Parameters.AddWithValue("@id",
-            dgvStudentInfo.CurrentRow.Cells[0].Value);
-            myConn.Open();
-            cmd.ExecuteNonQuery();
-            myConn.Close();
+            try
+            {
+                if (myConn == null)
+                {
+                    MessageBox.Show("Database connection is not initialized.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (dgvStudentInfo.CurrentRow == null)
+                {
+                    MessageBox.Show("No record selected.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult confirm = MessageBox.Show("Are you sure you want to delete this record?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm != DialogResult.Yes)
+                    return;
+
+                int StudID = Convert.ToInt32(dgvStudentInfo.CurrentRow.Cells[0].Value);
+
+                myConn.Open();
+
+                string[] tables = { "FinalGrade", "SubjectsEnrolled", "Student" };
+
+                foreach (string table in tables)
+                {
+                    using (OleDbCommand cmd = new OleDbCommand($"DELETE FROM {table} WHERE StudentID = ?", myConn))
+                    {
+                        cmd.Parameters.AddWithValue("?", StudID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                myConn.Close();
+                MessageBox.Show("Record deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnLoadData_Click(sender, e);
+            }
+            catch (Exception ex)
+            {
+                if (myConn.State == ConnectionState.Open)
+                    myConn.Close();
+
+                MessageBox.Show("Error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            string query = "Update Student Set LastName = @Lname Where StudentID = @id";
-            cmd = new OleDbCommand(query, myConn);
-            cmd.Parameters.AddWithValue("@ln", tbxLname.Text);
-            cmd.Parameters.AddWithValue("@id", Convert.ToInt32(tbxID.Text));
-            myConn.Open();
-            cmd.ExecuteNonQuery();
-            myConn.Close();
+            int rowsAffected = 0;
+            try
+            {
+                if (myConn == null)
+                {
+                    MessageBox.Show("There is no loaded data yet", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (dgvStudentInfo.CurrentRow == null)
+                {
+                    MessageBox.Show("No record selected for updating!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(tbxLname.Text) || string.IsNullOrWhiteSpace(tbxFname.Text) ||
+                    string.IsNullOrWhiteSpace(tbxCourse.Text) || string.IsNullOrWhiteSpace(tbxCourseNo.Text) ||
+                    string.IsNullOrWhiteSpace(tbxFGrade1.Text) || string.IsNullOrWhiteSpace(tbxYlevel.Text))
+                {
+                    MessageBox.Show("Empty inputs. Please fill all the necessary information.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                myConn.Open();
+
+                int StudID = Convert.ToInt32(dgvStudentInfo.CurrentRow.Cells[0].Value);
+                string lastName = tbxLname.Text.Trim().ToLower();
+                string firstName = tbxFname.Text.Trim().ToLower();
+
+                string checkQuery = "SELECT COUNT(*) FROM [Grade Query] WHERE LCase(Trim(LastName)) = ? AND LCase(Trim(FirstName)) = ? AND StudentID <> ?";
+                using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, myConn))
+                {
+                    checkCmd.Parameters.AddWithValue("?", lastName);
+                    checkCmd.Parameters.AddWithValue("?", firstName);
+                    checkCmd.Parameters.AddWithValue("?", StudID);
+
+                    int count = (int)checkCmd.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        MessageBox.Show("This makes a duplicate entry! This student already exists.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        myConn.Close();
+                        return;
+                    }
+                }
+                myConn.Close();
+                myConn.Open();
+
+                string query = "UPDATE [Grade Query] SET LastName = ?, FirstName = ?, Course = ?, YearLevel = ?, CourseNum1 = ?, FG1 = ? WHERE StudentID = ?";
+                using (OleDbCommand cmd = new OleDbCommand(query, myConn))
+                {
+                    cmd.Parameters.AddWithValue("?", tbxLname.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", tbxFname.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", tbxCourse.Text.ToUpper().Trim());
+
+                    if (!int.TryParse(tbxYlevel.Text.Trim(), out int yearLevel))
+                    {
+                        MessageBox.Show("Invalid Year Level. Please enter a number.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        myConn.Close();
+                        return;
+                    }
+                    cmd.Parameters.AddWithValue("?", yearLevel);
+
+                    cmd.Parameters.AddWithValue("?", tbxCourseNo.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", tbxFGrade1.Text.Trim());
+                    cmd.Parameters.AddWithValue("?", StudID);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+
+                myConn.Close();
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Record updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    btnLoadData_Click(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("No record found with the given ID.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Invalid input format. Please check your data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                if (myConn.State == ConnectionState.Open)
+                    myConn.Close();
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private void dgvStudentInfo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-                indexRow = e.RowIndex;
-                DataGridViewRow row = dgvStudentInfo.Rows[indexRow];
-                tbxID.Text = row.Cells[0].Value.ToString();
+            indexRow = e.RowIndex;
+            DataGridViewRow row = dgvStudentInfo.Rows[indexRow];
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
