@@ -46,7 +46,7 @@ namespace WEEK8
         }
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            string query = "Insert into Student (LastName, FirstName) values (@LName, @FName)";
+            string query = "INSERT INTO Student (Lastname, FirstName, Course, YearLevel, CourseNum1, FG1) VALUES (?,?,?,?,?,?)";
             myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\Desktop\\College\\2nd year 2nd semester AAAAAAAAAAAAAAAA\\CPE262 (OOP2)\\CPE262 Progam Files and Codes\\WEEK8_databaseprac_msaccess-master\\SchoolDatabase.accdb");
 
             myConn.Open();
