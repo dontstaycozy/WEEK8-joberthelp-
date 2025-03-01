@@ -18,7 +18,7 @@ namespace WEEK8
         //note: ang file location kay naas comp lab WAHHAHAHHWAHH
         private void btnConnectionTest_Click(object sender, EventArgs e)
         {
-            myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\Desktop\\College\\2nd year 2nd semester AAAAAAAAAAAAAAAA\\CPE262 (OOP2)\\CPE262 Progam Files and Codes\\WEEK8_databaseprac_msaccess-master\\SchoolDatabase.accdb");
+            myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\source\\repos\\WEEK8-joberthelp-\\SchoolDatabase1.accdb");
             ds = new DataSet();
             myConn.Open();
             System.Windows.Forms.MessageBox.Show("Connected successfully!");
@@ -29,7 +29,7 @@ namespace WEEK8
         {
             try
             {
-                myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\Desktop\\College\\2nd year 2nd semester AAAAAAAAAAAAAAAA\\CPE262 (OOP2)\\CPE262 Progam Files and Codes\\WEEK8_databaseprac_msaccess-master\\SchoolDatabase.accdb");
+                myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\source\\repos\\WEEK8-joberthelp-\\SchoolDatabase1.accdb");
                 da = new OleDbDataAdapter("SELECT Student.StudentID, Student.Lastname, Student.FirstName, Student.Course, Student.YearLevel, SubjectsEnrolled.CourseNum1, FinalGrade.FG1\r\nFROM (Student INNER JOIN SubjectsEnrolled ON Student.StudentID = SubjectsEnrolled.StudentID) INNER JOIN FinalGrade ON SubjectsEnrolled.StudentID = FinalGrade.StudentID;", myConn);
                 ds = new DataSet();
                 myConn.Open();
@@ -45,23 +45,73 @@ namespace WEEK8
         }
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\Desktop\\College\\2nd year 2nd semester AAAAAAAAAAAAAAAA\\CPE262 (OOP2)\\CPE262 Progam Files and Codes\\WEEK8_databaseprac_msaccess-master\\SchoolDatabase.accdb");
-            string query = "INSERT INTO [Grade Query] (Lastname, FirstName, Course, YearLevel, CourseNum1, FG1) VALUES (?,?,?,?,?,?)";
-
-            myConn.Open();
-            using (OleDbCommand cmd = new OleDbCommand(query, myConn))
+            try
             {
-                cmd.Parameters.AddWithValue("?", tbxLname.Text.ToUpper().Trim());
-                cmd.Parameters.AddWithValue("?", tbxFname.Text.ToUpper().Trim());
-                cmd.Parameters.AddWithValue("?", tbxCourse.Text.ToUpper().Trim());
-                cmd.Parameters.AddWithValue("?", int.Parse(tbxYlevel.Text));
-                cmd.Parameters.AddWithValue("?", tbxCourseNo.Text.ToUpper().Trim());
-                cmd.Parameters.AddWithValue("?", float.Parse(tbxFGrade1.Text));
-                cmd.ExecuteNonQuery();
+                myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source = C:\\Users\\fredwil\\source\\repos\\WEEK8-joberthelp-\\SchoolDatabase1.accdb");
+
+                if (myConn == null)
+                {
+                    MessageBox.Show("Not connected", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (tbxLname.Text == "" || tbxFname.Text == "")
+                {
+                    MessageBox.Show("Empty inputs. Please fill all the necessary information.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    myConn.Close();
+                    return;
+                }
+                myConn.Open();
+                string lastName = tbxLname.Text.Trim().ToLower();
+                string firstName = tbxFname.Text.Trim().ToLower();
+
+                string checkQuery = "SELECT COUNT(*) FROM [Grade Query] WHERE LCase(Trim(LastName)) = ? AND LCase(Trim(FirstName)) = ?";
+                using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, myConn))
+                {
+                    checkCmd.Parameters.AddWithValue("?", tbxLname.Text);
+                    checkCmd.Parameters.AddWithValue("?", tbxFname.Text);
+                    checkCmd.Parameters.AddWithValue("?", tbxCourse.Text);
+                    checkCmd.Parameters.AddWithValue("?", int.Parse(tbxYlevel.Text));
+                    checkCmd.Parameters.AddWithValue("?", tbxCourseNo.Text);
+                    checkCmd.Parameters.AddWithValue("?", tbxFGrade1.Text);
+
+                    int count = (int)checkCmd.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        MessageBox.Show("Duplicate entry! This student already exists.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        myConn.Close();
+                        return;
+                    }
+                }
+
+                string query = "Insert into [Grade Query] (LastName, FirstName, Course, YearLevel, CourseNum1, FG1) values (?, ?, ?, ?, ?, ?)";
+
+                using (OleDbCommand cmd = new OleDbCommand(query, myConn))
+                {
+                    cmd.Parameters.AddWithValue("?", tbxLname.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", tbxFname.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", tbxCourse.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", int.Parse(tbxYlevel.Text));
+                    cmd.Parameters.AddWithValue("?", tbxCourseNo.Text.ToUpper().Trim());
+                    cmd.Parameters.AddWithValue("?", tbxFGrade1.Text.ToUpper().Trim());
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                myConn.Close();
+                MessageBox.Show("Records inserted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnLoadData_Click(sender, e);
             }
-            myConn.Close();
-            MessageBox.Show("Records inserted successfully!", "Success", MessageBoxButtons.OK);
-            btnLoadData_Click(sender, e);
+            catch (Exception ex)
+            {
+                if (myConn == null)
+                {
+                    MessageBox.Show("There is no loaded data yet", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                myConn.Close();
+            }
         }
 
         private void btnDel_Click(object sender, EventArgs e)
@@ -206,21 +256,20 @@ namespace WEEK8
                 MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
         private void dgvStudentInfo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             indexRow = e.RowIndex;
             DataGridViewRow row = dgvStudentInfo.Rows[indexRow];
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void testConnectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            btnConnectionTest_Click(sender, e);
         }
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
 
+        private void loadDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnLoadData_Click(sender, e);
         }
     }
 }

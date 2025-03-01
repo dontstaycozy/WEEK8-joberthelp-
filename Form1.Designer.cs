@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             btnConnectionTest = new Button();
             btnLoadData = new Button();
             dgvStudentInfo = new DataGridView();
@@ -48,23 +49,29 @@
             label7 = new Label();
             tbxStudentID = new TextBox();
             label1 = new Label();
+            menuStrip1 = new MenuStrip();
+            testConnectionToolStripMenuItem = new ToolStripMenuItem();
+            loadDataToolStripMenuItem = new ToolStripMenuItem();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvStudentInfo).BeginInit();
+            menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // btnConnectionTest
             // 
-            btnConnectionTest.Location = new Point(29, 1430);
+            btnConnectionTest.Location = new Point(148, 1429);
             btnConnectionTest.Margin = new Padding(7, 8, 7, 8);
             btnConnectionTest.Name = "btnConnectionTest";
             btnConnectionTest.Size = new Size(318, 63);
             btnConnectionTest.TabIndex = 0;
-            btnConnectionTest.Text = "Connection Test";
+            btnConnectionTest.Text = "Test Connection";
             btnConnectionTest.UseVisualStyleBackColor = true;
             btnConnectionTest.Click += btnConnectionTest_Click;
             // 
             // btnLoadData
             // 
-            btnLoadData.Location = new Point(362, 1430);
+            btnLoadData.Location = new Point(481, 1429);
             btnLoadData.Margin = new Padding(7, 8, 7, 8);
             btnLoadData.Name = "btnLoadData";
             btnLoadData.Size = new Size(318, 63);
@@ -75,19 +82,23 @@
             // 
             // dgvStudentInfo
             // 
+            dgvStudentInfo.BackgroundColor = SystemColors.ButtonHighlight;
+            dgvStudentInfo.CellBorderStyle = DataGridViewCellBorderStyle.Sunken;
             dgvStudentInfo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudentInfo.Location = new Point(974, 33);
+            dgvStudentInfo.Cursor = Cursors.Cross;
+            dgvStudentInfo.GridColor = SystemColors.GradientInactiveCaption;
+            dgvStudentInfo.Location = new Point(974, 81);
             dgvStudentInfo.Margin = new Padding(7, 8, 7, 8);
             dgvStudentInfo.Name = "dgvStudentInfo";
             dgvStudentInfo.RowHeadersWidth = 102;
-            dgvStudentInfo.Size = new Size(1372, 1460);
+            dgvStudentInfo.Size = new Size(1372, 1412);
             dgvStudentInfo.TabIndex = 3;
             dgvStudentInfo.CellClick += dgvStudentInfo_CellClick;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(16, 131);
+            label2.Location = new Point(16, 162);
             label2.Margin = new Padding(7, 0, 7, 0);
             label2.Name = "label2";
             label2.Size = new Size(190, 41);
@@ -97,7 +108,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(16, 210);
+            label3.Location = new Point(16, 241);
             label3.Margin = new Padding(7, 0, 7, 0);
             label3.Name = "label3";
             label3.Size = new Size(189, 41);
@@ -106,7 +117,7 @@
             // 
             // tbxLname
             // 
-            tbxLname.Location = new Point(260, 125);
+            tbxLname.Location = new Point(260, 156);
             tbxLname.Margin = new Padding(7, 8, 7, 8);
             tbxLname.Name = "tbxLname";
             tbxLname.Size = new Size(507, 47);
@@ -114,7 +125,7 @@
             // 
             // tbxFname
             // 
-            tbxFname.Location = new Point(260, 204);
+            tbxFname.Location = new Point(260, 235);
             tbxFname.Margin = new Padding(7, 8, 7, 8);
             tbxFname.Name = "tbxFname";
             tbxFname.Size = new Size(507, 47);
@@ -122,7 +133,7 @@
             // 
             // btnInsert
             // 
-            btnInsert.Location = new Point(29, 1340);
+            btnInsert.Location = new Point(183, 1350);
             btnInsert.Margin = new Padding(7, 8, 7, 8);
             btnInsert.Name = "btnInsert";
             btnInsert.Size = new Size(182, 63);
@@ -133,7 +144,7 @@
             // 
             // btnDel
             // 
-            btnDel.Location = new Point(226, 1340);
+            btnDel.Location = new Point(380, 1350);
             btnDel.Margin = new Padding(7, 8, 7, 8);
             btnDel.Name = "btnDel";
             btnDel.Size = new Size(182, 63);
@@ -144,7 +155,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(423, 1340);
+            btnUpdate.Location = new Point(577, 1350);
             btnUpdate.Margin = new Padding(7, 8, 7, 8);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(182, 63);
@@ -155,17 +166,16 @@
             // 
             // tbxCourse
             // 
-            tbxCourse.Location = new Point(260, 281);
+            tbxCourse.Location = new Point(260, 312);
             tbxCourse.Margin = new Padding(7, 8, 7, 8);
             tbxCourse.Name = "tbxCourse";
             tbxCourse.Size = new Size(507, 47);
             tbxCourse.TabIndex = 14;
-            tbxCourse.TextChanged += textBox1_TextChanged;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(16, 279);
+            label4.Location = new Point(16, 310);
             label4.Margin = new Padding(7, 0, 7, 0);
             label4.Name = "label4";
             label4.Size = new Size(136, 41);
@@ -174,17 +184,16 @@
             // 
             // tbxYlevel
             // 
-            tbxYlevel.Location = new Point(260, 357);
+            tbxYlevel.Location = new Point(260, 388);
             tbxYlevel.Margin = new Padding(7, 8, 7, 8);
             tbxYlevel.Name = "tbxYlevel";
             tbxYlevel.Size = new Size(507, 47);
             tbxYlevel.TabIndex = 16;
-            tbxYlevel.TextChanged += textBox2_TextChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(17, 355);
+            label5.Location = new Point(17, 386);
             label5.Margin = new Padding(7, 0, 7, 0);
             label5.Name = "label5";
             label5.Size = new Size(179, 41);
@@ -193,7 +202,7 @@
             // 
             // tbxCourseNo
             // 
-            tbxCourseNo.Location = new Point(260, 429);
+            tbxCourseNo.Location = new Point(260, 460);
             tbxCourseNo.Margin = new Padding(7, 8, 7, 8);
             tbxCourseNo.Name = "tbxCourseNo";
             tbxCourseNo.Size = new Size(507, 47);
@@ -202,7 +211,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(17, 429);
+            label6.Location = new Point(17, 460);
             label6.Margin = new Padding(7, 0, 7, 0);
             label6.Name = "label6";
             label6.Size = new Size(196, 41);
@@ -211,7 +220,7 @@
             // 
             // tbxFGrade1
             // 
-            tbxFGrade1.Location = new Point(260, 504);
+            tbxFGrade1.Location = new Point(260, 535);
             tbxFGrade1.Margin = new Padding(7, 8, 7, 8);
             tbxFGrade1.Name = "tbxFGrade1";
             tbxFGrade1.Size = new Size(507, 47);
@@ -220,7 +229,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(17, 504);
+            label7.Location = new Point(17, 535);
             label7.Margin = new Padding(7, 0, 7, 0);
             label7.Name = "label7";
             label7.Size = new Size(229, 41);
@@ -229,7 +238,7 @@
             // 
             // tbxStudentID
             // 
-            tbxStudentID.Location = new Point(260, 50);
+            tbxStudentID.Location = new Point(260, 81);
             tbxStudentID.Margin = new Padding(7, 8, 7, 8);
             tbxStudentID.Name = "tbxStudentID";
             tbxStudentID.ReadOnly = true;
@@ -240,18 +249,54 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(16, 50);
+            label1.Location = new Point(16, 81);
             label1.Margin = new Padding(7, 0, 7, 0);
             label1.Name = "label1";
             label1.Size = new Size(189, 41);
             label1.TabIndex = 22;
             label1.Text = "STUDENT ID:";
             // 
+            // menuStrip1
+            // 
+            menuStrip1.ImageScalingSize = new Size(40, 40);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { testConnectionToolStripMenuItem, loadDataToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(2375, 49);
+            menuStrip1.TabIndex = 23;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // testConnectionToolStripMenuItem
+            // 
+            testConnectionToolStripMenuItem.Name = "testConnectionToolStripMenuItem";
+            testConnectionToolStripMenuItem.Size = new Size(255, 45);
+            testConnectionToolStripMenuItem.Text = "Test Connection";
+            testConnectionToolStripMenuItem.Click += testConnectionToolStripMenuItem_Click;
+            // 
+            // loadDataToolStripMenuItem
+            // 
+            loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
+            loadDataToolStripMenuItem.Size = new Size(176, 45);
+            loadDataToolStripMenuItem.Text = "Load Data";
+            loadDataToolStripMenuItem.Click += loadDataToolStripMenuItem_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(141, 675);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(600, 600);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 24;
+            pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.MistyRose;
             ClientSize = new Size(2375, 1525);
+            Controls.Add(pictureBox1);
             Controls.Add(label1);
             Controls.Add(tbxStudentID);
             Controls.Add(tbxFGrade1);
@@ -272,6 +317,8 @@
             Controls.Add(dgvStudentInfo);
             Controls.Add(btnLoadData);
             Controls.Add(btnConnectionTest);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Margin = new Padding(7, 8, 7, 8);
             MaximumSize = new Size(2407, 1613);
             MinimumSize = new Size(2407, 1613);
@@ -279,6 +326,9 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dgvStudentInfo).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -305,5 +355,9 @@
         private Label label7;
         private TextBox tbxStudentID;
         private Label label1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem testConnectionToolStripMenuItem;
+        private ToolStripMenuItem loadDataToolStripMenuItem;
+        private PictureBox pictureBox1;
     }
 }
