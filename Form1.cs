@@ -16,6 +16,7 @@ namespace WEEK8
             InitializeComponent();
         }//yawa
         //note: ang file location kay naas comp lab WAHHAHAHHWAHH
+        //YESYEYSYESYESYESyesssss
         private void btnConnectionTest_Click(object sender, EventArgs e)
         {
             myConn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source= C:\\Users\\fredwil\\source\\repos\\WEEK8-joberthelp-\\SchoolDatabase1.accdb");
@@ -203,7 +204,7 @@ namespace WEEK8
                     int count = (int)checkCmd.ExecuteScalar();
                     if (count > 0)
                     {
-                        MessageBox.Show("This makes a duplicate entry! This student already exists.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("This student already exists.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         myConn.Close();
                         return;
                     }
@@ -260,6 +261,12 @@ namespace WEEK8
         {
             indexRow = e.RowIndex;
             DataGridViewRow row = dgvStudentInfo.Rows[indexRow];
+            tbxLname.Text = row.Cells["Lastname"].Value?.ToString() ?? "";
+            tbxFname.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
+            tbxCourse.Text = row.Cells["Course"].Value?.ToString() ?? "";
+            tbxYlevel.Text = row.Cells["YearLevel"].Value?.ToString() ?? "";
+            tbxCourseNo.Text = row.Cells["CourseNum1"].Value?.ToString() ?? "";
+            tbxFGrade1.Text = row.Cells["FG1"].Value?.ToString() ?? "";
         }
 
         private void testConnectionToolStripMenuItem_Click(object sender, EventArgs e)

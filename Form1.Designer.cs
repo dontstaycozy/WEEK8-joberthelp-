@@ -60,29 +60,33 @@
             // 
             // btnConnectionTest
             // 
+            btnConnectionTest.BackColor = Color.LavenderBlush;
+            btnConnectionTest.ForeColor = SystemColors.ControlText;
             btnConnectionTest.Location = new Point(148, 1429);
             btnConnectionTest.Margin = new Padding(7, 8, 7, 8);
             btnConnectionTest.Name = "btnConnectionTest";
             btnConnectionTest.Size = new Size(318, 63);
             btnConnectionTest.TabIndex = 0;
             btnConnectionTest.Text = "Test Connection";
-            btnConnectionTest.UseVisualStyleBackColor = true;
+            btnConnectionTest.UseVisualStyleBackColor = false;
             btnConnectionTest.Click += btnConnectionTest_Click;
             // 
             // btnLoadData
             // 
+            btnLoadData.BackColor = Color.LavenderBlush;
+            btnLoadData.ForeColor = SystemColors.ControlText;
             btnLoadData.Location = new Point(481, 1429);
             btnLoadData.Margin = new Padding(7, 8, 7, 8);
             btnLoadData.Name = "btnLoadData";
             btnLoadData.Size = new Size(318, 63);
             btnLoadData.TabIndex = 1;
             btnLoadData.Text = "Load Data";
-            btnLoadData.UseVisualStyleBackColor = true;
+            btnLoadData.UseVisualStyleBackColor = false;
             btnLoadData.Click += btnLoadData_Click;
             // 
             // dgvStudentInfo
             // 
-            dgvStudentInfo.BackgroundColor = SystemColors.ButtonHighlight;
+            dgvStudentInfo.BackgroundColor = Color.LavenderBlush;
             dgvStudentInfo.CellBorderStyle = DataGridViewCellBorderStyle.Sunken;
             dgvStudentInfo.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvStudentInfo.Cursor = Cursors.Cross;
@@ -133,35 +137,41 @@
             // 
             // btnInsert
             // 
+            btnInsert.BackColor = Color.LavenderBlush;
+            btnInsert.ForeColor = SystemColors.ControlText;
             btnInsert.Location = new Point(183, 1350);
             btnInsert.Margin = new Padding(7, 8, 7, 8);
             btnInsert.Name = "btnInsert";
             btnInsert.Size = new Size(182, 63);
             btnInsert.TabIndex = 10;
             btnInsert.Text = "Insert";
-            btnInsert.UseVisualStyleBackColor = true;
+            btnInsert.UseVisualStyleBackColor = false;
             btnInsert.Click += btnInsert_Click;
             // 
             // btnDel
             // 
+            btnDel.BackColor = Color.LavenderBlush;
+            btnDel.ForeColor = SystemColors.ControlText;
             btnDel.Location = new Point(380, 1350);
             btnDel.Margin = new Padding(7, 8, 7, 8);
             btnDel.Name = "btnDel";
             btnDel.Size = new Size(182, 63);
             btnDel.TabIndex = 11;
             btnDel.Text = "Delete";
-            btnDel.UseVisualStyleBackColor = true;
+            btnDel.UseVisualStyleBackColor = false;
             btnDel.Click += btnDel_Click;
             // 
             // btnUpdate
             // 
+            btnUpdate.BackColor = Color.LavenderBlush;
+            btnUpdate.ForeColor = SystemColors.ControlText;
             btnUpdate.Location = new Point(577, 1350);
             btnUpdate.Margin = new Padding(7, 8, 7, 8);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(182, 63);
             btnUpdate.TabIndex = 12;
             btnUpdate.Text = "Update";
-            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.UseVisualStyleBackColor = false;
             btnUpdate.Click += btnUpdate_Click;
             // 
             // tbxCourse
@@ -283,9 +293,9 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(141, 675);
+            pictureBox1.Location = new Point(200, 709);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(600, 600);
+            pictureBox1.Size = new Size(500, 500);
             pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBox1.TabIndex = 24;
             pictureBox1.TabStop = false;
@@ -294,7 +304,7 @@
             // 
             AutoScaleDimensions = new SizeF(17F, 41F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.MistyRose;
+            BackColor = Color.Pink;
             ClientSize = new Size(2375, 1525);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
